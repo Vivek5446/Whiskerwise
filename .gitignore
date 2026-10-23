@@ -20,6 +20,12 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Android build output and machine-local configuration
+/android/.gradle/
+/android/local.properties
+/android/**/build/
+/android/captures/
+
 # Local environment files
 .env*
 !.env.example

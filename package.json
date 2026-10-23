@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:android": "node scripts/build-android.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -17,6 +18,8 @@
     "rolldown": "1.2.1"
   },
   "dependencies": {
+    "@capacitor/android": "^7.6.9",
+    "@capacitor/core": "^7.6.9",
     "@fontsource/fredoka": "^5.3.0",
     "@fontsource/nunito": "^5.3.0",
     "@hookform/resolvers": "^5.2.2",
@@ -73,6 +76,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.6.9",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.26.5",
     "@testing-library/jest-dom": "^6.6.0",

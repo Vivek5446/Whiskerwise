@@ -23,6 +23,29 @@ npm run dev
 
 ## Install and play offline
 
+### Android APK
+
+Install dependencies and build a debug APK (requires Android Studio, Android
+SDK API 35, and JDK 21):
+
+```sh
+npm install
+npm run build:android
+```
+
+The APK is written to
+`android/app/build/outputs/apk/debug/app-debug.apk`. Install it on a connected
+Android device with:
+
+```sh
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+The app is bundled with its game assets for offline play. This debug APK is for
+testing; publishing to Google Play requires a separately signed release build.
+
+### Installable web app
+
 Build and deploy the production app over HTTPS:
 
 ```sh
