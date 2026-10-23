@@ -22,6 +22,13 @@ const RAW: { size: number; regions: string[]; solution: number[] }[] = [
   { size: 6, regions: ["001111", "001111", "302111", "302411", "334445", "335555"], solution: [1, 4, 2, 0, 3, 5] },
   { size: 7, regions: ["1111200", "1111223", "1111223", "5554443", "5444443", "5564444", "5564444"], solution: [5, 1, 4, 6, 3, 0, 2] },
   { size: 7, regions: ["0001111", "0001111", "2233111", "3333511", "4333511", "4466566", "4466666"], solution: [2, 5, 1, 3, 0, 4, 6] },
+
+{ size: 9, regions: ["000111222", "033114422", "033344422", "553334446", "557734866", "557778886", "557778886", "577778866", "555777866"], solution: [2, 5, 0, 7, 4, 1, 8, 3, 6] }, 
+  { size: 9, regions: ["001122333", "001122333", "044125533", "444455553", "444455556", "477755566", "777888666", "778888666", "777888866"], solution: [3, 0, 6, 2, 8, 5, 1, 4, 7] },
+
+// --- SIZE 10 PUZZLES ---
+  { size: 10, regions: ["0000112233", "0000112233", "4001122233", "4441555233", "4441555233", "4445555663", "7445588663", "7775888666", "7778888666", "7779999966"], solution: [4, 1, 7, 0, 3, 8, 5, 2, 9, 6] },
+
 ];
 
 const TITLES = [
@@ -30,6 +37,11 @@ const TITLES = [
   "Secret Nooks", "Ribbon Tangle", "Pawprint Picnic", "Hidden Hammocks",
   "Whisker Weave", "Catnip Corners", "Velvet Mazes", "Midnight Paws",
   "Tangled Tails", "Quiet Clues", "Nine Lives", "Purrfect Finale",
+  "Sleepy Shadows", 
+  "Stretching Sunbeams", 
+  "Tilted Towers", 
+  "Mirrored Meows", 
+  "Upside Down Alleys"
 ];
 
 export const LEVELS: Puzzle[] = RAW.map((p, i) => ({

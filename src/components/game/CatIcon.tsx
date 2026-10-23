@@ -18,7 +18,7 @@ export type Expression =
 
 const AUTO_EXPRESSIONS: readonly Expression[] = [
   "happy",
-  "wink",
+  // "wink",
   "smile",
   "laugh",
   // "smug",
