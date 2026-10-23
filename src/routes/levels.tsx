@@ -30,7 +30,8 @@ const ZONE_GAP = 84; // extra vertical room for each zone banner
 const TOP = 64;
 const STAR = "M12 0 L14.6 9.4 L24 12 L14.6 14.6 L12 24 L9.4 14.6 L0 12 L9.4 9.4 Z";
 
-type DecoKind = "flower" | "bush" | "cloud" | "yarn" | "mushroom" | "fish" | "mouse" | "star" | "bubble";
+type DecoKind =
+  "flower" | "bush" | "cloud" | "yarn" | "mushroom" | "fish" | "mouse" | "star" | "bubble";
 
 interface Zone {
   name: string;
@@ -41,11 +42,41 @@ interface Zone {
 }
 
 const ZONES: Zone[] = [
-  { name: "Sunny Meadow", color: "#52D940", light: "#A5F28C", dark: "#2E9C1B", decos: ["flower", "bush", "cloud", "flower"] },
-  { name: "Yarn Valley", color: "#FF5FD2", light: "#FF9BE6", dark: "#B5238F", decos: ["yarn", "mushroom", "yarn", "star"] },
-  { name: "Fishy Harbor", color: "#3DA5FF", light: "#8FCBFF", dark: "#1A66C7", decos: ["fish", "cloud", "bubble", "fish"] },
-  { name: "Mouse Hollow", color: "#FF9F1C", light: "#FFC46B", dark: "#C26A00", decos: ["mouse", "mushroom", "bush", "mouse"] },
-  { name: "Moonlit Roofs", color: "#8E6BFF", light: "#B9A3FF", dark: "#5133C2", decos: ["star", "cloud", "star", "yarn"] },
+  {
+    name: "Sunny Meadow",
+    color: "#52D940",
+    light: "#A5F28C",
+    dark: "#2E9C1B",
+    decos: ["flower", "bush", "cloud", "flower"],
+  },
+  {
+    name: "Yarn Valley",
+    color: "#FF5FD2",
+    light: "#FF9BE6",
+    dark: "#B5238F",
+    decos: ["yarn", "mushroom", "yarn", "star"],
+  },
+  {
+    name: "Fishy Harbor",
+    color: "#3DA5FF",
+    light: "#8FCBFF",
+    dark: "#1A66C7",
+    decos: ["fish", "cloud", "bubble", "fish"],
+  },
+  {
+    name: "Mouse Hollow",
+    color: "#FF9F1C",
+    light: "#FFC46B",
+    dark: "#C26A00",
+    decos: ["mouse", "mushroom", "bush", "mouse"],
+  },
+  {
+    name: "Moonlit Roofs",
+    color: "#8E6BFF",
+    light: "#B9A3FF",
+    dark: "#5133C2",
+    decos: ["star", "cloud", "star", "yarn"],
+  },
 ];
 
 const zoneOf = (i: number) => Math.floor(i / ZONE_SIZE);
@@ -61,7 +92,8 @@ const seg = (a: P, b: P) => {
   const m = (a.y + b.y) / 2;
   return `C ${a.x} ${m}, ${b.x} ${m}, ${b.x} ${b.y}`;
 };
-const buildPath = (pts: P[]) => pts.map((p, i) => (i ? seg(pts[i - 1]!, p) : `M ${p.x} ${p.y}`)).join(" ");
+const buildPath = (pts: P[]) =>
+  pts.map((p, i) => (i ? seg(pts[i - 1]!, p) : `M ${p.x} ${p.y}`)).join(" ");
 const bez = (a: P, b: P, t: number) => {
   const m = (a.y + b.y) / 2;
   const u = 1 - t;
@@ -81,7 +113,13 @@ const PAWS = PTS.slice(0, -1).flatMap((a, i) => {
     const q = bez(a, b, t + 0.02);
     const vx = (q.x - p.x) * 3.2; // ~px per % of the 320px trail
     const vy = q.y - p.y;
-    return { i, k, x: p.x + (k % 2 ? 1.8 : -1.8), y: p.y, rot: (Math.atan2(vx, -vy) * 180) / Math.PI };
+    return {
+      i,
+      k,
+      x: p.x + (k % 2 ? 1.8 : -1.8),
+      y: p.y,
+      rot: (Math.atan2(vx, -vy) * 180) / Math.PI,
+    };
   });
 });
 
@@ -97,7 +135,7 @@ const CSS = `
 @keyframes lv-shake  { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-3px) rotate(-3deg); } 40% { transform: translateX(3px) rotate(3deg); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
 @keyframes lv-walk   { 0%, 100% { opacity: .25; transform: translate(-50%, -50%) scale(.85); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); } }
 @keyframes lv-draw   { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
-@keyframes lv-pop    { 0% { opacity: 0; transform: translateX(-50%) scale(.7); } 70% { transform: translateX(-50%) scale(1.06); } 100% { opacity: 1; transform: translateX(-50%) scale(1); } }
+@keyframes lv-pop    { 0% { opacity: 0; transform: scale(.7); } 70% { transform: scale(1.06); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes lv-bar    { to { background-position: 32px 0, 0 0; } }
 @keyframes lv-grow   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes lv-bob    { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-4px) rotate(3deg); } }
@@ -124,8 +162,15 @@ const CSS = `
 `;
 
 const DECO_ANIM: Record<DecoKind, string> = {
-  flower: "lv-sway", bush: "lv-sway", mushroom: "lv-sway", mouse: "lv-sway",
-  cloud: "lv-drift", yarn: "lv-wobble", fish: "lv-wobble", star: "lv-twinkle", bubble: "lv-float",
+  flower: "lv-sway",
+  bush: "lv-sway",
+  mushroom: "lv-sway",
+  mouse: "lv-sway",
+  cloud: "lv-drift",
+  yarn: "lv-wobble",
+  fish: "lv-wobble",
+  star: "lv-twinkle",
+  bubble: "lv-float",
 };
 
 /* ───────────────────────── scenery ───────────────────────── */
@@ -139,7 +184,13 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
           <path d="M20 22 V46" stroke="#2E9C1B" strokeWidth="3" strokeLinecap="round" />
           <path d="M20 38 Q30 34 32 26 Q22 28 20 38Z" fill="#52D940" />
           {[0, 72, 144, 216, 288].map((a) => (
-            <circle key={a} cx={20 + 8 * Math.cos((a * Math.PI) / 180)} cy={16 + 8 * Math.sin((a * Math.PI) / 180)} r="6" fill={color} />
+            <circle
+              key={a}
+              cx={20 + 8 * Math.cos((a * Math.PI) / 180)}
+              cy={16 + 8 * Math.sin((a * Math.PI) / 180)}
+              r="6"
+              fill={color}
+            />
           ))}
           <circle cx="20" cy="16" r="5" fill="#FFD60A" />
           <circle cx="18.5" cy="14.5" r="1.5" fill="#fff" opacity=".7" />
@@ -163,7 +214,13 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
           <circle cx="31" cy="16" r="13" fill="#fff" />
           <circle cx="44" cy="22" r="10" fill="#fff" />
           <rect x="14" y="22" width="36" height="10" rx="5" fill="#fff" />
-          <path d="M18 29 Q31 33 46 29" stroke="#CFE3FF" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <path
+            d="M18 29 Q31 33 46 29"
+            stroke="#CFE3FF"
+            strokeWidth="2.5"
+            fill="none"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "yarn":
@@ -175,7 +232,13 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
             <path d="M6 24 Q20 34 34 22" />
             <path d="M12 8 Q19 21 11 32" />
           </g>
-          <path d="M31 31 Q42 34 36 42" stroke={color} strokeWidth="2.6" strokeLinecap="round" fill="none" />
+          <path
+            d="M31 31 Q42 34 36 42"
+            stroke={color}
+            strokeWidth="2.6"
+            strokeLinecap="round"
+            fill="none"
+          />
           <circle cx="14" cy="13" r="4" fill="#fff" opacity=".35" />
         </svg>
       );
@@ -195,7 +258,14 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
           <path d="M34 16 L46 6 L46 26Z" fill={dark} />
           <ellipse cx="20" cy="16" rx="17" ry="11" fill={color} />
           <path d="M16 6 Q22 0 28 7Z" fill={dark} />
-          <path d="M10 22 Q20 29 30 21" stroke="#fff" strokeWidth="2" opacity=".4" fill="none" strokeLinecap="round" />
+          <path
+            d="M10 22 Q20 29 30 21"
+            stroke="#fff"
+            strokeWidth="2"
+            opacity=".4"
+            fill="none"
+            strokeLinecap="round"
+          />
           <circle cx="11" cy="13" r="3.6" fill="#fff" />
           <circle cx="10.2" cy="13" r="1.7" fill="#1f1b2e" />
         </svg>
@@ -203,7 +273,13 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
     case "mouse":
       return (
         <svg viewBox="0 0 44 36" className={cls} aria-hidden>
-          <path d="M34 28 Q46 27 42 16" stroke={dark} strokeWidth="2.6" fill="none" strokeLinecap="round" />
+          <path
+            d="M34 28 Q46 27 42 16"
+            stroke={dark}
+            strokeWidth="2.6"
+            fill="none"
+            strokeLinecap="round"
+          />
           <ellipse cx="24" cy="25" rx="14" ry="9" fill="#C9CFDD" />
           <circle cx="12" cy="22" r="9" fill="#C9CFDD" />
           <circle cx="8" cy="12" r="5.2" fill="#C9CFDD" />
@@ -223,8 +299,22 @@ function Deco({ kind, color, dark }: { kind: DecoKind; color: string; dark: stri
     case "bubble":
       return (
         <svg viewBox="0 0 40 40" className={cls} aria-hidden>
-          <circle cx="20" cy="20" r="14" fill="#fff" fillOpacity=".18" stroke="#fff" strokeWidth="2.5" />
-          <path d="M12 16 Q14 11 19 10" stroke="#fff" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+          <circle
+            cx="20"
+            cy="20"
+            r="14"
+            fill="#fff"
+            fillOpacity=".18"
+            stroke="#fff"
+            strokeWidth="2.5"
+          />
+          <path
+            d="M12 16 Q14 11 19 10"
+            stroke="#fff"
+            strokeWidth="2.5"
+            fill="none"
+            strokeLinecap="round"
+          />
         </svg>
       );
   }
@@ -236,8 +326,13 @@ function Levels() {
   const [progress] = useProgress();
   const currentNode = useRef<HTMLDivElement>(null);
   const totalStars = Object.values(progress.stars).reduce((a, b) => a + b, 0);
-  const next = LEVELS.find((level) => level.id <= progress.unlocked && !progress.stars[level.id])?.id ?? LEVELS.length;
-  const nextIdx = Math.max(0, LEVELS.findIndex((l) => l.id === next));
+  const next =
+    LEVELS.find((level) => level.id <= progress.unlocked && !progress.stars[level.id])?.id ??
+    LEVELS.length;
+  const nextIdx = Math.max(
+    0,
+    LEVELS.findIndex((l) => l.id === next),
+  );
   const walkedPath = nextIdx > 0 ? buildPath(PTS.slice(0, nextIdx + 1)) : "";
 
   const solvedCount = LEVELS.filter((l) => progress.stars[l.id]).length;
@@ -245,7 +340,7 @@ function Levels() {
   const pct = Math.round((solvedCount / LEVELS.length) * 100);
 
   return (
-    <Screen>
+    <Screen className="overflow-x-clip">
       <style>{CSS}</style>
       <Decor />
       <TopBar
@@ -261,14 +356,19 @@ function Levels() {
       <div className="relative z-10 mx-auto mt-6 w-full max-w-xs rounded-3xl bg-card/90 p-4 text-left shadow-pop">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Trail progress</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Trail progress
+            </p>
             <p className="font-display text-3xl font-bold leading-none">
               {solvedCount}
               <span className="text-lg text-muted-foreground">/{LEVELS.length}</span>
             </p>
           </div>
           <div className="-mt-9 size-16 shrink-0">
-            <CatIcon variant={solvedCount} className="size-full drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]" />
+            <CatIcon
+              variant={solvedCount}
+              className="size-full drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]"
+            />
           </div>
         </div>
 
@@ -305,14 +405,19 @@ function Levels() {
 
         <GameButton
           className="mt-3 flex w-full items-center justify-center gap-2 py-2.5 text-base"
-          onClick={() => currentNode.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
+          onClick={() =>
+            currentNode.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+          }
         >
           <MapPin className="size-4" /> {progress.stars[next] ? "Level" : "Next up · Level"} {next}
         </GameButton>
       </div>
 
       {/* trail */}
-      <div className="relative z-10 mx-auto mt-6 w-full max-w-xs" style={{ height: HEIGHT }}>
+      <div
+        className="relative z-10 mx-auto mt-6 w-full max-w-xs overflow-x-clip"
+        style={{ height: HEIGHT }}
+      >
         {/* soft zone tints */}
         {Array.from({ length: ZONE_COUNT }, (_, z) => {
           const zone = ZONES[z % ZONES.length]!;
@@ -375,19 +480,58 @@ function Levels() {
         })}
 
         {/* trail path */}
-        <svg className="absolute inset-0 z-[1] size-full" viewBox={`0 0 100 ${HEIGHT}`} preserveAspectRatio="none" aria-hidden>
+        <svg
+          className="absolute inset-0 z-[1] size-full"
+          viewBox={`0 0 100 ${HEIGHT}`}
+          preserveAspectRatio="none"
+          aria-hidden
+        >
           <defs>
-            <linearGradient id="lv-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2={HEIGHT}>
+            <linearGradient
+              id="lv-grad"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2={HEIGHT}
+            >
               {PTS.map((p, i) => (
                 <stop key={i} offset={Math.min(1, p.y / HEIGHT)} stopColor={zoneData(i).color} />
               ))}
             </linearGradient>
           </defs>
-          <path d={FULL_PATH} fill="none" className="stroke-border" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+          <path
+            d={FULL_PATH}
+            fill="none"
+            className="stroke-border"
+            strokeWidth="14"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
           {walkedPath && (
-            <path d={walkedPath} fill="none" stroke="url(#lv-grad)" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" pathLength={1} className="lv-draw" />
+            <path
+              d={walkedPath}
+              fill="none"
+              stroke="url(#lv-grad)"
+              strokeWidth="14"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              pathLength={1}
+              className="lv-draw"
+            />
           )}
-          <path d={FULL_PATH} fill="none" className="stroke-card" strokeWidth="3" strokeDasharray="2 10" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.9" />
+          <path
+            d={FULL_PATH}
+            fill="none"
+            className="stroke-card"
+            strokeWidth="3"
+            strokeDasharray="2 10"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            opacity="0.9"
+          />
         </svg>
 
         {/* paw prints walking the trail */}
@@ -398,7 +542,11 @@ function Levels() {
             <span
               key={`${p.i}-${p.k}`}
               aria-hidden
-              className={cn("pointer-events-none absolute z-[1] -translate-x-1/2 -translate-y-1/2", !walked && "text-card", leading && "lv-walk")}
+              className={cn(
+                "pointer-events-none absolute z-[1] -translate-x-1/2 -translate-y-1/2",
+                !walked && "text-card",
+                leading && "lv-walk",
+              )}
               style={{
                 left: `${p.x}%`,
                 top: p.y,
@@ -423,7 +571,10 @@ function Levels() {
           return (
             <div
               key={z}
-              className={cn("lv-pop absolute left-1/2 z-[2] flex w-[86%] items-center justify-between rounded-2xl px-3 py-2 text-white", zoneLocked && "opacity-60 saturate-50")}
+              className={cn(
+                "lv-pop absolute left-1/2 z-[2] flex w-[86%] -translate-x-1/2 items-center justify-between rounded-2xl px-3 py-2 text-white",
+                zoneLocked && "opacity-60 saturate-50",
+              )}
               style={{
                 top: yOf(first) - 36 - ZONE_GAP + 14,
                 background: `linear-gradient(135deg, ${zone.light}, ${zone.color} 60%)`,
@@ -433,10 +584,16 @@ function Levels() {
             >
               <span className="flex items-center gap-2 text-left">
                 <span className="grid size-8 place-items-center rounded-full bg-white/25">
-                  {zoneLocked ? <Lock className="size-4" strokeWidth={2.8} /> : <Paw className="size-4" />}
+                  {zoneLocked ? (
+                    <Lock className="size-4" strokeWidth={2.8} />
+                  ) : (
+                    <Paw className="size-4" />
+                  )}
                 </span>
                 <span className="flex flex-col leading-tight [text-shadow:0_1px_0_rgba(0,0,0,0.25)]">
-                  <span className="text-[10px] font-bold uppercase tracking-wider opacity-85">Zone {z + 1}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider opacity-85">
+                    Zone {z + 1}
+                  </span>
                   <span className="font-display text-base font-bold">{zone.name}</span>
                 </span>
               </span>
@@ -460,7 +617,8 @@ function Levels() {
             !locked && "btn-game",
             locked && "lv-lock bg-muted text-muted-foreground shadow-pop",
             done && "text-white [text-shadow:0_2px_0_rgba(0,0,0,0.25)]",
-            current && "animate-ring bg-primary text-primary-foreground [--btn-depth:var(--primary-deep)]",
+            current &&
+              "animate-ring bg-primary text-primary-foreground [--btn-depth:var(--primary-deep)]",
           );
           const nodeStyle = done
             ? ({
@@ -470,7 +628,11 @@ function Levels() {
             : undefined;
           const body = (
             <>
-              {locked ? <Lock className="size-6" strokeWidth={2.6} /> : <span className="font-bold">{l.id}</span>}
+              {locked ? (
+                <Lock className="size-6" strokeWidth={2.6} />
+              ) : (
+                <span className="font-bold">{l.id}</span>
+              )}
               {done && (
                 <span className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-card text-mint-deep shadow-pop">
                   <Check className="size-4" strokeWidth={3.5} />
@@ -481,19 +643,33 @@ function Levels() {
                   <span className="absolute -left-1.5 -top-2 grid size-6 -rotate-12 place-items-center rounded-full bg-card text-star-deep shadow-pop">
                     <Crown className="size-3.5 fill-current" />
                   </span>
-                  <span aria-hidden className="lv-spin pointer-events-none absolute -inset-2 rounded-full border-2 border-dashed border-amber-300" />
+                  <span
+                    aria-hidden
+                    className="lv-spin pointer-events-none absolute -inset-2 rounded-full border-2 border-dashed border-amber-300"
+                  />
                   {[
                     "-right-3 top-6 size-3",
                     "-left-3 bottom-3 size-2.5",
                     "right-2 -bottom-3 size-2",
                   ].map((c, k) => (
-                    <svg key={c} viewBox="0 0 24 24" aria-hidden className={cn("lv-twinkle pointer-events-none absolute fill-amber-300", c)} style={{ animationDelay: `${k * 600}ms` }}>
+                    <svg
+                      key={c}
+                      viewBox="0 0 24 24"
+                      aria-hidden
+                      className={cn("lv-twinkle pointer-events-none absolute fill-amber-300", c)}
+                      style={{ animationDelay: `${k * 600}ms` }}
+                    >
                       <path d={STAR} />
                     </svg>
                   ))}
                 </>
               )}
-              {current && <CatIcon variant={i} className="absolute -top-9 size-10 animate-float" />}
+              {current && (
+                <CatIcon
+                  variant={i}
+                  className="absolute -top-9 left-1/2 size-10 -translate-x-1/2 animate-float"
+                />
+              )}
               {current && (
                 <span
                   aria-hidden
@@ -513,11 +689,17 @@ function Levels() {
               ref={l.id === next ? currentNode : undefined}
               data-level={l.id}
               className="animate-bounce-in absolute z-[3] flex w-32 -translate-x-1/2 flex-col items-center gap-1 text-center"
-              style={{ left: `${x}%`, top: (PTS[i]?.y ?? 0) - 36, animationDelay: `${Math.min(i * 40, 240)}ms` }}
+              style={{
+                left: `${x}%`,
+                top: (PTS[i]?.y ?? 0) - 36,
+                animationDelay: `${Math.min(i * 40, 240)}ms`,
+              }}
             >
               <div className="relative transition-transform duration-200 hover:z-10 hover:-rotate-3 hover:scale-110">
                 {locked ? (
-                  <div className={node} aria-label={`Level ${l.id}, locked`}>{body}</div>
+                  <div className={node} aria-label={`Level ${l.id}, locked`}>
+                    {body}
+                  </div>
                 ) : (
                   <Link
                     to="/play/$levelId"
@@ -532,11 +714,24 @@ function Levels() {
                 )}
               </div>
               <span className="flex h-5 items-center rounded-full bg-card/90 px-1.5 shadow-pop">
-                {locked ? <span className="px-1 text-xs font-bold text-muted-foreground">{l.size}×{l.size}</span> : <Stars count={stars} size="size-3.5" />}
+                {locked ? (
+                  <span className="px-1 text-xs font-bold text-muted-foreground">
+                    {l.size}×{l.size}
+                  </span>
+                ) : (
+                  <Stars count={stars} size="size-3.5" />
+                )}
               </span>
-              <span className={cn("flex w-full flex-col rounded-xl bg-card/80 px-2 py-1 shadow-pop backdrop-blur-sm", locked && "opacity-80")}>
+              <span
+                className={cn(
+                  "flex w-full flex-col rounded-xl bg-card/80 px-2 py-1 shadow-pop backdrop-blur-sm",
+                  locked && "opacity-80",
+                )}
+              >
                 <span className="font-display text-sm font-semibold leading-tight">{l.title}</span>
-                <span className="text-xs font-semibold leading-tight text-muted-foreground">{l.difficulty} · {l.size}×{l.size}</span>
+                <span className="text-xs font-semibold leading-tight text-muted-foreground">
+                  {l.difficulty} · {l.size}×{l.size}
+                </span>
               </span>
             </div>
           );
@@ -546,9 +741,22 @@ function Levels() {
       {/* end of the trail */}
       <div className="relative z-10 mt-2 flex flex-col items-center">
         <div className="relative">
-          <CatIcon variant={5} animated={false} className="size-16 -rotate-6 opacity-90 drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]" />
-          {["right-[-0.6rem] top-0 text-lg", "right-[-1.4rem] -top-3 text-xl", "right-[-2.2rem] -top-7 text-2xl"].map((c, k) => (
-            <span key={c} aria-hidden className={cn("lv-zz absolute font-display font-bold text-primary", c)} style={{ animationDelay: `${k * 700}ms` }}>
+          <CatIcon
+            variant={5}
+            animated={false}
+            className="size-16 -rotate-6 opacity-90 drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]"
+          />
+          {[
+            "right-[-0.6rem] top-0 text-lg",
+            "right-[-1.4rem] -top-3 text-xl",
+            "right-[-2.2rem] -top-7 text-2xl",
+          ].map((c, k) => (
+            <span
+              key={c}
+              aria-hidden
+              className={cn("lv-zz absolute font-display font-bold text-primary", c)}
+              style={{ animationDelay: `${k * 700}ms` }}
+            >
               z
             </span>
           ))}

@@ -9,6 +9,19 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const BUILD_ID = String(Date.now());
 
+const stripCatSceneSourceAnnotations = {
+  name: "strip-cat-scene-source-annotations",
+  enforce: "pre" as const,
+  transform(code: string, id: string) {
+    if (!/(?:^|[\\/])src[\\/]components[\\/]game[\\/]CatIcon\.tsx(?:\?|$)/.test(id)) {
+      return null;
+    }
+
+    const stripped = code.replace(/\s+data-tsd-source="[^"]*"/g, "");
+    return stripped === code ? null : { code: stripped, map: null };
+  },
+};
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
@@ -19,6 +32,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [
+      stripCatSceneSourceAnnotations,
       VitePWA({
         strategies: "generateSW",
         registerType: "prompt",

@@ -134,20 +134,20 @@ function Home() {
           <span className="absolute inset-x-6 bottom-3 h-8 rounded-[50%] bg-ink/15 blur-md" aria-hidden />
 
           {/* companions that change as you progress */}
-          <span
+          {/* <span
             aria-hidden
             className="hm-peek absolute -left-11 bottom-3 z-0 w-14"
             style={{ ["--rot" as string]: "-8deg" }}
           >
             <CatIcon variant={catA} className="size-full drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]" />
-          </span>
-          <span
+          </span> */}
+          {/* <span
             aria-hidden
             className="hm-peek absolute -right-11 bottom-3 z-0 w-14 [animation-delay:650ms]"
             style={{ ["--rot" as string]: "8deg" }}
           >
             <CatIcon variant={catB} className="size-full drop-shadow-[0_3px_0_rgba(0,0,0,0.2)]" />
-          </span>
+          </span> */}
 
           {/* tap the kitten */}
           <button
@@ -157,7 +157,7 @@ function Home() {
             className="relative z-10 block cursor-pointer touch-manipulation select-none rounded-[2rem] outline-none focus-visible:ring-4 focus-visible:ring-ink/40"
           >
             <span key={pet} className={cn("block", pet > 0 && "hm-boing")}>
-              <img src={mascot} alt="Purrzle the kitten" width={816} height={816} className="home-kitten animate-float relative w-52 sm:w-60" draggable={false} />
+              <img src={mascot} alt="Purrzle the kitten" width={200} height={200} className="home-kitten animate-float relative w-48 sm:w-50" draggable={false} />
             </span>
           </button>
 
