@@ -1,10 +1,11 @@
-import { useRef } from "react";
 import type { Board as BoardT, Puzzle } from "@/game/rules";
 import { cn } from "@/lib/utils";
+import { useRef } from "react";
 // import { CatIcon } from "./CatIcon";
-import { GameButton } from "./ui";
 import type { CellTool } from "@/game/useCellTaps";
-import { CatIcon3DD } from "./CatIcon";
+// import { CatIcon3DD } from "./CatIcon";
+import { CatIcon } from "./CatIcon";
+import { GameButton } from "./ui";
 
 // [base, light, dark] per region. Vivid on purpose; swap freely.
 const PALETTE: any= [
@@ -253,7 +254,7 @@ export function Board({ puzzle, board, conflicts, doneRegions, hintIndex, onCell
                         >
                           <span className={cn("block size-full", bad ? "bd-wiggle" : "bd-stamp")}>
                             <span className={cn("block size-full", !bad && done && "bd-bob")}>
-                              <CatIcon3DD
+                              <CatIcon
                                 className="size-full drop-shadow-[0_3px_0_rgba(0,0,0,0.3)] drop-shadow-[0_6px_6px_rgba(0,0,0,0.25)]"
                                 mood={bad ? "upset" : "auto"}
                                 variant={g}
